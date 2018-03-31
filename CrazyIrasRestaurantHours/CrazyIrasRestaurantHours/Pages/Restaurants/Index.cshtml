@@ -1,0 +1,59 @@
+@page
+@model CrazyIrasRestaurantHours.Pages.Restaurants.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Pick a time, any time!</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form>
+    <p>
+        Date: <input type="date" name="SearchDate">
+        Time: <input type="time" name="searchTime">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Restaurants[0].ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Restaurants[0].Name) (@Html.DisplayFor(model => model.Restaurants.Count) Total)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Restaurants.OrderBy(s=>s.Name)) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            <strong>  @Html.DisplayFor(modelItem => item.Name)</strong>
+            @foreach (var hasTime in Model.RestaurantHasTimes.Where(s => s.RestaurantID == item.ID).OrderBy(s=>s.DayOfWeekInt))
+            {
+            <div>
+                @Html.DisplayFor(modelItem => hasTime.DayOfWeekString): @hasTime.StartTime.ToShortTimeString() - @hasTime.EndTime.ToShortTimeString()
+            </div>
+
+
+
+            }
+        </td>
+        <td>
+            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+            <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
