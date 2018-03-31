@@ -89,6 +89,10 @@ namespace CrazyIrasRestaurantHours.Models.SeedInfo
                             RestaurantID = restaurant.ID
                         };
 
+                    if (restaurantHasTime.StartTime > restaurantHasTime.EndTime)
+                    {
+                        restaurantHasTime.EndTime = restaurantHasTime.EndTime.AddDays(1);
+                    }
                     context.RestaurantHasTime.Add(restaurantHasTime);
                 }
 

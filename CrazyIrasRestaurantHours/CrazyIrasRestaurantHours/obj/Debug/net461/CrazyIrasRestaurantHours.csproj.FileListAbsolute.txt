@@ -332,3 +332,4 @@ E:\Dropbox\Arrow Technology Solutions\Projects\BYUCodingExercise\CrazyIrasRestau
 E:\Dropbox\Arrow Technology Solutions\Projects\BYUCodingExercise\CrazyIrasRestaurantHours\CrazyIrasRestaurantHours\bin\Debug\net461\System.Composition.Runtime.dll
 E:\Dropbox\Arrow Technology Solutions\Projects\BYUCodingExercise\CrazyIrasRestaurantHours\CrazyIrasRestaurantHours\bin\Debug\net461\System.Composition.TypedParts.dll
 E:\Dropbox\Arrow Technology Solutions\Projects\BYUCodingExercise\CrazyIrasRestaurantHours\CrazyIrasRestaurantHours\bin\Debug\net461\Microsoft.EntityFrameworkCore.Design.dll
+E:\Dropbox\Arrow Technology Solutions\Projects\BYUCodingExercise\CrazyIrasRestaurantHours\CrazyIrasRestaurantHours\bin\Debug\net461\Itenso.TimePeriod.dll

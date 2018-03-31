@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CrazyIrasRestaurantHours.Models;
+using Itenso.TimePeriod;
 
 namespace CrazyIrasRestaurantHours.Pages.Restaurants
 {
@@ -27,8 +28,8 @@ namespace CrazyIrasRestaurantHours.Pages.Restaurants
                               select restaurant;
 
             restaurants = FilterRestaurants(searchDate, searchTime, restaurants);
-             
-            
+
+
 
             Restaurants = await restaurants.ToListAsync();
             RestaurantHasTimes = await _context.RestaurantHasTime.ToListAsync();
@@ -42,6 +43,9 @@ namespace CrazyIrasRestaurantHours.Pages.Restaurants
 
                 DateTime? selectedDayOfWeek = null;
                 TimeSpan? selectedTime = null;
+                DateTime selectedDateTime = DateTime.Today;
+
+
                 if (!string.IsNullOrEmpty(searchDate))
                 {
                     selectedDayOfWeek = DateTime.Parse(searchDate);
@@ -50,18 +54,35 @@ namespace CrazyIrasRestaurantHours.Pages.Restaurants
                 if (!string.IsNullOrEmpty(searchTime))
                 {
                     selectedTime = TimeSpan.Parse(searchTime);
+                    var rht = _context.RestaurantHasTime.FirstOrDefault();
+                    var date = rht.StartTime;
+
+                    selectedDateTime = new DateTime(date.Year, date.Month, date.Day, selectedTime.Value.Hours, selectedTime.Value.Minutes, selectedTime.Value.Seconds);
                 }
 
+
+
                 restaurants = from restaurant in restaurants
-                    join restaurantHasTime in _context.RestaurantHasTime
-                        on restaurant.ID equals restaurantHasTime.RestaurantID
-                    where (selectedDayOfWeek == null || restaurantHasTime.DayOfWeekInt == (int) selectedDayOfWeek.Value.DayOfWeek)
-                          && (selectedTime == null || restaurantHasTime.StartTime.TimeOfDay <= selectedTime.Value)
-                          && (selectedTime == null || restaurantHasTime.EndTime.TimeOfDay >= selectedTime.Value)
-                    select restaurant;
+                              join restaurantHasTime in _context.RestaurantHasTime
+                                  on restaurant.ID equals restaurantHasTime.RestaurantID
+
+                              //StartTime Calculations
+                              let startTime = restaurantHasTime.StartTime
+
+                              ////EndTime Calculations
+                              let endTime = restaurantHasTime.EndTime
+
+                              ////Selected Time Calculations
+                              let chosenTime = selectedDateTime
+                              let modifiedChosenTime =  chosenTime >= startTime ?  chosenTime :chosenTime.AddDays(1)
+
+                              where (selectedDayOfWeek == null || restaurantHasTime.DayOfWeekInt == (int)selectedDayOfWeek.Value.DayOfWeek)
+                                    && (selectedTime == null || (startTime <= modifiedChosenTime && modifiedChosenTime <= endTime))
+
+                              select restaurant;
             }
 
-            restaurants = restaurants.OrderBy(s=>s.ID).Distinct();
+            restaurants = restaurants.OrderBy(s => s.ID).Distinct();
             return restaurants;
         }
     }
