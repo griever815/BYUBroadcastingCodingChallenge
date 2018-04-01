@@ -13,7 +13,7 @@ What could seem simple at first glance (Naïve approach: If the restaurant is op
 requested time is greater than the opening timeand less than the closing time) breaks when you have restaurants open past midnight. Nothing in the question hints at this, so it was only discoverable by running your code and realizing that some restaurants
 you expected to see didn’t get returned. This is a question that rewards attention to detail.
 
-I got it finished, and here are the steps that you will need to take to get it running:
+I got it finished, and here are the steps that you will need to take to get it running:(I even confirmed that it should work on a separate machine. I had a buddy download it and run it, as well as I created a windows VM, installed Visual Studio, and ran it and it worked so it should work just fine)
 
 1. Download the Project from Github.
 2. Open the Project in Visual Studio.
